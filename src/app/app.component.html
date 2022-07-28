@@ -1,20 +1,32 @@
 <div class="container p-4">
   <div class="row justify-content-center">
     <div class="col-md-4 p-1">
-      <button class="btn btn-primary col-12"><i class="bi bi-people-fill me-2"></i>Clients</button>
+      <button (click)="showClients()" class="btn btn-primary col-12"><i class="bi bi-people-fill me-2"></i>Clients</button>
     </div>
     <div class="col-md-4 p-1">
-      <button class="btn btn-primary col-12"><i class="bi bi-box-seam-fill me-2"></i>Products</button>
+      <button (click)="showProducts()" class="btn btn-primary col-12"><i class="bi bi-box-seam-fill me-2"></i>Products</button>
     </div>
     <div class="col-md-4 p-1">
-      <button class="btn btn-primary col-12"><i class="bi bi-cash-coin me-2"></i>Sales</button>
+      <button (click)="showSales()" class="btn btn-primary col-12"><i class="bi bi-cash-coin me-2"></i>Sales</button>
     </div>
     <div class="col-md-12 p-1">
-      <button class="btn btn-primary col-12"><i class="bi bi-receipt me-2"></i>Invoices</button>
+      <button (click)="showInvoices()" class="btn btn-primary col-12"><i class="bi bi-receipt me-2"></i>Invoices</button>
     </div>
-      
-      
-      
-      
+  </div>
+
+  <div class="row" *ngIf="divClients">
+    <app-clients-component></app-clients-component>
+  </div>
+
+  <div class="row" *ngIf="divProducts">
+    <app-products-component></app-products-component>
+  </div>
+
+  <div class="row" *ngIf="divSales">
+    <app-sales-component></app-sales-component>
+  </div>
+
+  <div class="row" *ngIf="divInvoices">
+    <app-invoices-component></app-invoices-component>
   </div>
 </div>
