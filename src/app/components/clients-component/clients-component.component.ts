@@ -61,6 +61,7 @@ export class ClientsComponentComponent implements OnInit {
 
     if (this.editMode) {
       //edit client
+      
     }
     else {
       //add client

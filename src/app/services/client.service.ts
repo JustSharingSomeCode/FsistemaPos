@@ -14,20 +14,19 @@ export class ClientService {
 
   constructor(private http: HttpClient) { }
 
- getClientList(): Observable<IClient[]>
- {
-  return this.http.get<IClient[]>(this.myAppUrl + this.myApiUrl);
- }
+  getClientList(): Observable<IClient[]> {
+    return this.http.get<IClient[]>(this.myAppUrl + this.myApiUrl);
+  }
 
-  deleteTarjeta(id: string): Observable<any> {
+  deleteClient(id: string): Observable<any> {
     return this.http.delete(this.myAppUrl + this.myApiUrl + id)
   }
 
-  saveTarjeta(client: IClient): Observable<IClient> {
+  saveClient(client: IClient): Observable<IClient> {
     return this.http.post<IClient>(this.myAppUrl + this.myApiUrl, client);
   }
 
-  updateTarjeta(id: string, client: IClient): Observable<any> {
+  updateClient(id: string, client: IClient): Observable<any> {
     return this.http.put(this.myAppUrl + this.myApiUrl + id, client);
   }
 }
