@@ -68,10 +68,10 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let client of clientList; let i = index">
-                        <td>{{ client.getId() }}</td>
-                        <td>{{ client.getName() }}</td>
-                        <td>{{ client.getPhone() }}</td>
-                        <td>{{ client.getAddress() }}</td>
+                        <td>{{ client.clientId }}</td>
+                        <td>{{ client.cName }}</td>
+                        <td>{{ client.phone }}</td>
+                        <td>{{ client.cAddress }}</td>
                         <td>
                             <i (click)="editClient(client)" class="hand bi bi-pencil-square text-info"></i>
                         </td>

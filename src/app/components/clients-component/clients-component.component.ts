@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Client } from 'src/app/models/client.model';
+import { IClient } from 'src/app/interfaces/iclient';
+import { ClientService } from 'src/app/services/client.service';
 
 @Component({
   selector: 'app-clients-component',
@@ -13,13 +14,22 @@ export class ClientsComponentComponent implements OnInit {
   editMode = false;
   editId = "";
 
-  clientList: Client[] = [
-    new Client("1003568324", "Oscar Diaz", "3114993389", "Direccion de residencia"),
-    new Client("1000008324", "Andres Bejarano", "351456798", "Direccion de residencia")
-  ]
+  clientList: IClient[] = [{
+    clientId: "1003568324",
+    cName: "Oscar Diaz",
+    phone: "3114993389",
+    cAddress: "Direccion de residencia"
+  },
+  {
+    clientId: "1000008324",
+    cName: "Andres Bejarano",
+    phone: "351456798",
+    cAddress: "Direccion de residencia"
+  }]
+
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private _clientService: ClientService) {
     this.form = fb.group({
       clientId: ["", [Validators.required, Validators.maxLength(10)]],
       c_name: ["", [Validators.required, Validators.maxLength(100)]],
@@ -29,15 +39,25 @@ export class ClientsComponentComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getClients();
+  }
+
+  getClients() {
+    this._clientService.getClientList().subscribe({
+      next: (data: IClient[]) => {
+        this.clientList = data;
+      },
+      error: (err: Error) => console.log(err)
+    });
   }
 
   saveClient() {
-    const client: Client = new Client(
-      this.form.get("clientId")?.value,
-      this.form.get("c_name")?.value,
-      this.form.get("phone")?.value,
-      this.form.get("c_address")?.value
-    );
+    const client: IClient = {
+      clientId: this.form.get("clientId")?.value,
+      cName: this.form.get("c_name")?.value,
+      phone: this.form.get("phone")?.value,
+      cAddress: this.form.get("c_address")?.value
+    };
 
     if (this.editMode) {
       //edit client
@@ -48,17 +68,17 @@ export class ClientsComponentComponent implements OnInit {
     }
   }
 
-  editClient(client: Client) {
+  editClient(client: IClient) {
     this.action = "Edit"
     this.editMode = true;
-    this.editId = client.getId();
+    this.editId = client.clientId
 
     this.form.patchValue(
       {
-        clientId: client.getId(),
-        c_name: client.getName(),
-        phone: client.getPhone(),
-        c_address: client.getAddress(),
+        clientId: client.clientId,
+        c_name: client.cName,
+        phone: client.phone,
+        c_address: client.cAddress,
       }
     );
   }
