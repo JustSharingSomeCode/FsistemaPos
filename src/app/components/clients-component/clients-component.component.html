@@ -1,11 +1,11 @@
 <p>clients-component works!</p>
 <div class="card">
     <div class="row text-center mt-2">
-        <h3>Add client</h3>
+        <h3>{{ action }} client</h3>
     </div>
 
     <div class="row m-2 pb-2">
-        <form [formGroup]="form">
+        <form [formGroup]="form" (ngSubmit)="saveClient()">
             <div class="input-group mb-3">
                 <span class="input-group-text">
                     <i class="bi bi-person-badge-fill" [class.green-icon]="this.form.get('clientId')?.valid"
@@ -38,8 +38,12 @@
                 <input formControlName="c_address" type="text" class="form-control" placeholder="Address">
             </div>
 
-            <button type="submit" class="btn btn-primary col-12" [disabled]="this.form.invalid">
-                <i class="bi bi-check2-circle"></i> Add
+            <button type="submit" class="btn btn-primary col-12 mb-2" [disabled]="this.form.invalid">
+                <i class="bi bi-check2-circle"></i> Save
+            </button>
+
+            <button *ngIf="editMode" (click)="cancelEdit()" class="btn btn-danger col-12">
+                <i class="bi bi-x-circle"></i> Cancel
             </button>
         </form>
     </div>
@@ -63,16 +67,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let client of clientList">
+                    <tr *ngFor="let client of clientList; let i = index">
                         <td>{{ client.getId() }}</td>
                         <td>{{ client.getName() }}</td>
                         <td>{{ client.getPhone() }}</td>
                         <td>{{ client.getAddress() }}</td>
                         <td>
-                            <i class="hand bi bi-pencil-square text-info"></i>
+                            <i (click)="editClient(client)" class="hand bi bi-pencil-square text-info"></i>
                         </td>
                         <td>
-                            <i class="hand bi bi-trash3-fill text-danger"></i>
+                            <i (click)="deleteClient(i)" class="hand bi bi-trash3-fill text-danger"></i>
                         </td>
                     </tr>
                 </tbody>
