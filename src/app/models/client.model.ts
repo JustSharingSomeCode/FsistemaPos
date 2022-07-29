@@ -1,11 +1,11 @@
 export class Client {
-    private client_id: string;
+    private clientId: string;
     private c_name: string;
     private phone: string;
     private c_address: string;
 
-    constructor(client_id: string, c_name: string, phone: string, c_address: string) {
-        this.client_id = client_id;
+    constructor(clientId: string, c_name: string, phone: string, c_address: string) {
+        this.clientId = clientId;
         this.c_name = c_name;
         this.phone = phone;
         this.c_address = c_address;
@@ -13,7 +13,7 @@ export class Client {
 
     public getId() : string
     {
-        return this.client_id;
+        return this.clientId;
     }
 
     public getName() : string

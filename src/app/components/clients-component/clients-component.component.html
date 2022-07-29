@@ -8,6 +8,14 @@
         <form [formGroup]="form">
             <div class="input-group mb-3">
                 <span class="input-group-text">
+                    <i class="bi bi-person-badge-fill" [class.green-icon]="this.form.get('clientId')?.valid"
+                        [class.red-icon]="this.form.get('clientId')?.invalid && this.form.get('clientId')?.touched"></i>
+                </span>
+                <input formControlName="clientId" type="text" class="form-control" placeholder="Id">
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">
                     <i class="bi bi-person-circle" [class.green-icon]="this.form.get('c_name')?.valid"
                         [class.red-icon]="this.form.get('c_name')?.invalid && this.form.get('c_name')?.touched"></i>
                 </span>
@@ -61,10 +69,10 @@
                         <td>{{ client.getPhone() }}</td>
                         <td>{{ client.getAddress() }}</td>
                         <td>
-                            <i class="far bi bi-pencil-square text-info"></i>
+                            <i class="hand bi bi-pencil-square text-info"></i>
                         </td>
                         <td>
-                            <i class="far bi bi-trash3-fill text-danger"></i>
+                            <i class="hand bi bi-trash3-fill text-danger"></i>
                         </td>
                     </tr>
                 </tbody>

@@ -17,6 +17,7 @@ export class ClientsComponentComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
     this.form = fb.group({
+      clientId: ["", [Validators.required, Validators.maxLength(10)]],
       c_name: ["", [Validators.required, Validators.maxLength(100)]],
       phone: ["", [Validators.required, Validators.minLength(10), Validators.maxLength(20)]],
       c_address: ["", [Validators.required, Validators.maxLength(50)]],
