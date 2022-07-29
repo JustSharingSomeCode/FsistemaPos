@@ -1,1 +1,63 @@
-<p>products-component works!</p>
+<div class="card">
+    <div class="row text-center mt-2">
+        <h3>{{ action }} product</h3>
+    </div>
+
+    <div class="row m-2 pb-2">
+        <form [formGroup]="form" (ngSubmit)="saveProduct()">
+
+            <!--Product name-->
+            <div class="input-group mb-3">
+                <span class="input-group-text">
+                    <i class="bi bi-tag-fill" [class.green-icon]="this.form.get('pName')?.valid"
+                        [class.red-icon]="this.form.get('pName')?.invalid && this.form.get('pName')?.touched"></i>
+                </span>
+                <input formControlName="pName" type="text" class="form-control" placeholder="Name">
+            </div>
+
+            <!--Product description-->
+            <div class="input-group mb-3">
+                <span class="input-group-text">
+                    <i class="bi bi-input-cursor-text" [class.green-icon]="this.form.get('pDescription')?.valid"
+                        [class.red-icon]="this.form.get('pDescription')?.invalid && this.form.get('pDescription')?.touched"></i>
+                </span>
+                <input formControlName="pDescription" type="text" class="form-control" placeholder="Description">
+            </div>
+
+            <!--Product stock-->
+            <div class="input-group mb-3">
+                <span class="input-group-text">
+                    <i class="bi bi-stack" [class.green-icon]="this.form.get('stock')?.valid"
+                        [class.red-icon]="this.form.get('stock')?.invalid && this.form.get('stock')?.touched"></i>
+                </span>
+                <input formControlName="stock" type="number" class="form-control" placeholder="Stock">
+            </div>
+
+            <!--Product img-->
+            <div class="input-group mb-3">
+                <span class="input-group-text">
+                    <i class="bi bi-image-fill" [class.green-icon]="this.form.get('img')?.valid"
+                        [class.red-icon]="this.form.get('img')?.invalid && this.form.get('img')?.touched"></i>
+                </span>
+                <input formControlName="img" type="text" class="form-control" placeholder="Image URL">
+            </div>
+
+            <!--Product price-->
+            <div class="input-group mb-3">
+                <span class="input-group-text">
+                    <i class="bi bi-coin" [class.green-icon]="this.form.get('price')?.valid"
+                        [class.red-icon]="this.form.get('price')?.invalid && this.form.get('price')?.touched"></i>
+                </span>
+                <input formControlName="price" type="number" class="form-control" placeholder="Price">
+            </div>
+
+            <button type="submit" class="btn btn-primary col-12 mb-2" [disabled]="this.form.invalid">
+                <i class="bi bi-check2-circle"></i> Save
+            </button>
+
+            <button *ngIf="editMode" (click)="cancelEdit()" class="btn btn-danger col-12">
+                <i class="bi bi-x-circle"></i> Cancel
+            </button>
+        </form>
+    </div>
+</div>
