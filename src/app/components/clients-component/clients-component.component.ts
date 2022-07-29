@@ -61,11 +61,23 @@ export class ClientsComponentComponent implements OnInit {
 
     if (this.editMode) {
       //edit client
-      
+      this._clientService.updateClient(this.editId, client).subscribe({
+        next: () => {
+          this.cancelEdit();
+          this.getClients();
+        },
+        error: (err: Error) => console.log(err)
+      });
     }
     else {
       //add client
-      this.clientList.push(client);
+      this._clientService.saveClient(client).subscribe({
+        next: () => {
+          this.form.reset();
+          this.getClients();
+        },
+        error: (err: Error) => console.log(err)
+      });
     }
   }
 
@@ -84,8 +96,13 @@ export class ClientsComponentComponent implements OnInit {
     );
   }
 
-  deleteClient(id: number) {
-    this.clientList.splice(id, 1);
+  deleteClient(id: string) {
+    this._clientService.deleteClient(id).subscribe({
+      next: () => {
+        this.getClients();
+      },
+      error: (err: Error) => console.log(err)
+    });
   }
 
   cancelEdit() {
