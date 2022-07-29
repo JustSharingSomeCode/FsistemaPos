@@ -6,6 +6,8 @@ import { ClientsComponentComponent } from './components/clients-component/client
 import { ProductsComponentComponent } from './components/products-component/products-component.component';
 import { SalesComponentComponent } from './components/sales-component/sales-component.component';
 import { InvoicesComponentComponent } from './components/invoices-component/invoices-component.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { InvoicesComponentComponent } from './components/invoices-component/invo
     InvoicesComponentComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

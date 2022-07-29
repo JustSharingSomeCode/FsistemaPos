@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+.hand{
+    cursor: pointer;
+}
+
+.green-icon
+{
+    color: #198754;
+}
+
+.red-icon
+{
+    color: #dc3545;
+}

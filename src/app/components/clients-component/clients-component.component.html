@@ -1,1 +1,71 @@
 <p>clients-component works!</p>
+<div class="card">
+    <div class="row text-center mt-2">
+        <h3>Add client</h3>
+    </div>
+
+    <div class="row m-2 pb-2">
+        <form [formGroup]="form">
+            <div class="input-group mb-3">
+                <span class="input-group-text">
+                    <i class="bi bi-person-circle" [class.green-icon]="this.form.get('c_name')?.valid"
+                        [class.red-icon]="this.form.get('c_name')?.invalid && this.form.get('c_name')?.touched"></i>
+                </span>
+                <input formControlName="c_name" type="text" class="form-control" placeholder="Name">
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">
+                    <i class="bi bi-telephone-fill" [class.green-icon]="this.form.get('phone')?.valid"
+                        [class.red-icon]="this.form.get('phone')?.invalid && this.form.get('phone')?.touched"></i>
+                </span>
+                <input formControlName="phone" type="text" class="form-control" placeholder="Phone">
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">
+                    <i class="bi bi-geo-alt-fill" [class.green-icon]="this.form.get('c_address')?.valid"
+                        [class.red-icon]="this.form.get('c_address')?.invalid && this.form.get('c_address')?.touched"></i>
+                </span>
+                <input formControlName="c_address" type="text" class="form-control" placeholder="Address">
+            </div>
+
+            <button type="submit" class="btn btn-primary col-12"
+                        [disabled]="this.form.invalid">
+                            <i class="bi bi-check2-circle"></i> Add
+                        </button>
+        </form>
+    </div>
+</div>
+
+<div class="card mt-2">
+    <div class="card-body">
+        <div class="row text-center">
+            <h3>Client list</h3>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Phone</td>
+                    <td>Address</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let client of clientList">
+                    <td>{{ client.c_name }}</td>
+                    <td>{{ client.phone }}</td>
+                    <td>{{ client.c_address }}</td>
+                    <td>
+                        <i class="far bi bi-pencil-square text-info"></i>
+                    </td>
+                    <td>
+                        <i class="far bi bi-trash3-fill text-danger"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
