@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Client } from 'src/app/models/client.model';
 
 @Component({
   selector: 'app-clients-component',
@@ -8,9 +9,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class ClientsComponentComponent implements OnInit {
 
-  clientList: any[] = [
-    { c_name: "Oscar Diaz", phone: "3114993389", c_address: "Direccion de residencia" },
-    { c_name: "Andres Bejarano", phone: "351456798", c_address: "Direccion de residencia" }
+  clientList: Client[] = [
+    new Client("1003568324", "Oscar Diaz", "3114993389", "Direccion de residencia"),
+    new Client("1000008324", "Andres Bejarano", "351456798", "Direccion de residencia")
   ]
   form: FormGroup;
 
