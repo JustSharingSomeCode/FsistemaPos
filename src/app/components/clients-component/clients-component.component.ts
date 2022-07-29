@@ -14,18 +14,7 @@ export class ClientsComponentComponent implements OnInit {
   editMode = false;
   editId = "";
 
-  clientList: IClient[] = [{
-    clientId: "1003568324",
-    cName: "Oscar Diaz",
-    phone: "3114993389",
-    cAddress: "Direccion de residencia"
-  },
-  {
-    clientId: "1000008324",
-    cName: "Andres Bejarano",
-    phone: "351456798",
-    cAddress: "Direccion de residencia"
-  }]
+  clientList: IClient[] = []
 
   form: FormGroup;
 
