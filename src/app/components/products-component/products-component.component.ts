@@ -11,7 +11,7 @@ export class ProductsComponentComponent implements OnInit {
 
   action = "Add"
   editMode = false;
-  editId = "";
+  editId = 0;
 
   productList: IProduct[] = [
     {
@@ -36,8 +36,8 @@ export class ProductsComponentComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
     this.form = fb.group({
-      pName: ["",[Validators.required, Validators.maxLength(150)]],
-      pDescription: ["", [Validators.required, Validators.maxLength(250)]],
+      pName: ["", [Validators.required, Validators.maxLength(150)]],
+      pDescription: ["", Validators.maxLength(250)],
       stock: ["", Validators.required],
       img: ["", [Validators.required, Validators.maxLength(350)]],
       price: ["", Validators.required]
@@ -47,28 +47,54 @@ export class ProductsComponentComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getProducts()
-  {
+  getProducts() {
 
   }
 
-  saveProduct()
-  {
+  saveProduct() {
+    const product: IProduct = {
+      productId: 0,
+      pName: this.form.get("pName")?.value,
+      pDescription: this.form.get("pDescription")?.value,
+      stock: this.form.get("stock")?.value,
+      img: this.form.get("img")?.value,
+      price: this.form.get("price")?.value
+    }
+
+    if (this.editMode) {
+      //edit product
+    }
+    else {
+      //add product
+      this.productList.push(product);
+    }
+  }
+
+  editProduct(product: IProduct) {
+    this.action = "Edit"
+    this.editMode = true;
+    this.editId = product.productId
+
+    this.form.patchValue(
+      {
+        pName: product.pName,
+        pDescription: product.pDescription,
+        stock: product.stock,
+        img: product.img,
+        price: product.price
+      }
+    );
+  }
+
+  deleteProduct(id: number) {
 
   }
 
-  editProduct()
-  {
+  cancelEdit() {
+    this.action = "Add"
+    this.editMode = false;
+    this.editId = 0;
 
-  }
-
-  deleteProduct()
-  {
-
-  }
-
-  cancelEdit()
-  {
-
+    this.form.reset();
   }
 }
