@@ -61,3 +61,20 @@
         </form>
     </div>
 </div>
+
+<div class="row mt-2 d-flex">
+    <div *ngFor="let product of productList" class="col-lg-4 col-md-6 col-sm-6 mb-2 d-flex align-self-stretch">
+        <div class="card shadow col-12">
+            <div class="card-body text-center">
+                <div class="img-container col-6 rounded m-auto">
+                    <img class="rounded-5" src="{{ product.img }}" alt="">
+                </div>
+                <div class="mt-2">
+                    <h5>{{ product.pName }}</h5>
+                    <p>{{ product.pDescription }}</p>
+                    <h4>${{ product.price }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
