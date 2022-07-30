@@ -6,6 +6,7 @@ import { IProduct } from 'src/app/interfaces/iproduct';
 import { ISale } from 'src/app/interfaces/isale';
 import { ClientService } from 'src/app/services/client.service';
 import { ProductService } from 'src/app/services/product.service';
+import { SaleService } from 'src/app/services/sale.service';
 
 @Component({
   selector: 'app-invoice-new',
@@ -29,7 +30,8 @@ export class InvoiceNewComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
     private _clientService: ClientService,
-    private _productService: ProductService) {
+    private _productService: ProductService,
+    private _saleService: SaleService) {
     this.invoice.invoiceId = 0;
     this.client.clientId = "";
     this.selectedProduct.productId = 0;
@@ -126,5 +128,34 @@ export class InvoiceNewComponent implements OnInit {
   toCurrency(price: number)
   {
     return price.toLocaleString('en-US', { style: 'currency', currency: 'COL' });
+  }
+
+  getSales()
+  {
+    this._saleService.getSaleList().subscribe({
+      next: (list: ISale[]) => 
+      {
+        this.saleList = list;
+      }
+    });
+  }
+
+  saveSale()
+  {
+    const sale: ISale = {} as ISale;
+    sale.saleId = 0;
+    sale.invoiceIdFk = this.invoice.invoiceId;
+    sale.productIdFk = this.selectedProduct.productId;
+    sale.quantity = this.saleForm.get("quantity")?.value;
+    sale.unitPrice = this.saleForm.get("unitPice")?.value;
+    sale.subTotal = this.subTotal;
+
+    this._saleService.saveSale(sale).subscribe({
+      next: () => {
+        this.getSales();
+        this.searchProducts();
+      },
+      error: (err: Error) => console.log(err)
+    });
   }
 }
