@@ -17,6 +17,10 @@ export class ProductService {
     return this.http.get<IProduct[]>(this.myAppUrl + this.myApiUrl);
   }
 
+  getProductsByName(name: string): Observable<IProduct[]> {
+    return this.http.get<IProduct[]>(this.myAppUrl + this.myApiUrl + "by_name/" + name);
+  }
+
   deleteProduct(id: number): Observable<any> {
     return this.http.delete(this.myAppUrl + this.myApiUrl + id)
   }

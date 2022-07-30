@@ -1,11 +1,6 @@
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Launch demo modal
-</button>
-
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Add product</h5>
@@ -13,7 +8,7 @@
             </div>
             <div class="modal-body">
                 <form [formGroup]="productForm" (ngSubmit)="searchProducts()">
-        
+
                     <!--Product name-->
                     <div class="input-group mb-3">
                         <span class="input-group-text">
@@ -26,6 +21,60 @@
                         </button>
                     </div>
                 </form>
+
+                <div *ngIf="productList.length != 0" class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Stock</th>
+                                <th>Price</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr *ngFor="let product of productList">
+                                <td>{{ product.pName }}</td>
+                                <td>{{ product.pDescription }}</td>
+                                <td>{{ product.stock }}</td>
+                                <td>{{ product.price }}</td>
+                                <td>
+                                    <i (click)="selectProduct(product)" class="hand bi bi-plus-circle text-success"></i>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div *ngIf="selectedProduct.productId != 0" class="text-center">
+                    <h3>{{ selectedProduct.pName }}</h3>
+                    <form [formGroup]="saleForm">
+
+                        <!--Product quantity-->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">
+                                <i class="bi bi-person-badge-fill"
+                                    [class.green-icon]="this.saleForm.get('quantity')?.valid"
+                                    [class.red-icon]="this.saleForm.get('quantity')?.invalid && this.saleForm.get('quantity')?.touched"></i>
+                            </span>
+                            <input formControlName="quantity" (change)="updateSubTotal()" min="1" [max]="selectedProduct.stock" type="number" class="form-control" placeholder="Quantity">
+                        </div>
+
+                        <!--Product unit price-->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">
+                                <i class="bi bi-person-badge-fill"
+                                    [class.green-icon]="this.saleForm.get('unitPrice')?.valid"
+                                    [class.red-icon]="this.saleForm.get('unitPrice')?.invalid && this.saleForm.get('unitPrice')?.touched"></i>
+                            </span>
+                            <input formControlName="unitPrice" (change)="updateSubTotal()" class="form-control" min="0" type="number" [value]="selectedProduct.price" placeholder="Unit price">
+                        </div>
+                    </form>
+                    <h5>Subtotal: {{ toCurrency(subTotal) }}</h5>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -51,7 +100,7 @@
                         [class.red-icon]="this.clientForm.get('clientId')?.invalid && this.clientForm.get('clientId')?.touched"></i>
                 </span>
                 <input formControlName="clientId" type="text" class="form-control" placeholder="Client Id">
-                <button type="submit" class="btn btn-outline-secondary">
+                <button [disabled]="!clientForm.valid" type="submit" class="btn btn-outline-secondary">
                     <i class="bi bi-search"></i>
                 </button>
             </div>
@@ -60,8 +109,10 @@
         <div *ngIf="client.clientId != ''">
             <p><strong>Name:</strong> {{client.cName}}</p>
 
-            <button *ngIf="invoice.invoiceId == 0" (click)="createInvoice()" class="btn btn-primary">Create new invoice</button>
-            <button *ngIf="invoice.invoiceId != 0" (click)="discardInvoice()" class="btn btn-danger">Discard invoice</button>
+            <button *ngIf="invoice.invoiceId == 0" (click)="createInvoice()" class="btn btn-primary">Create new
+                invoice</button>
+            <button *ngIf="invoice.invoiceId != 0" (click)="discardInvoice()" class="btn btn-danger">Discard
+                invoice</button>
         </div>
     </div>
 </div>
@@ -71,7 +122,7 @@
         <div class="text-center">
             <h3>Products</h3>
         </div>
-        <div *ngIf="productList.length != 0" class="table-responsive">
+        <div *ngIf="saleList.length != 0" class="table-responsive">
             <table class="table table-striped">
                 <thead class="table-light">
                     <tr>
@@ -83,7 +134,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+
                     <tr *ngFor="let sale of saleList">
                         <td>{{ sale.product.pName }}</td>
                         <td>{{ sale.quantity }}</td>
@@ -93,9 +144,13 @@
                             <i class="hand bi bi-trash3-fill text-danger"></i>
                         </td>
                     </tr>
-                    
+
                 </tbody>
             </table>
         </div>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary col-12" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Add products
+        </button>
     </div>
 </div>

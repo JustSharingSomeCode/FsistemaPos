@@ -5,6 +5,7 @@ import { Iinvoice } from 'src/app/interfaces/iinvoice';
 import { IProduct } from 'src/app/interfaces/iproduct';
 import { ISale } from 'src/app/interfaces/isale';
 import { ClientService } from 'src/app/services/client.service';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-invoice-new',
@@ -20,17 +21,30 @@ export class InvoiceNewComponent implements OnInit {
 
   clientForm: FormGroup;
   productForm: FormGroup;
+  saleForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private _clientService: ClientService) {
+  subTotal: number = 0;
+
+  selectedProduct: IProduct = {} as IProduct;
+
+  constructor(private fb: FormBuilder,
+    private _clientService: ClientService,
+    private _productService: ProductService) {
     this.invoice.invoiceId = 0;
     this.client.clientId = "";
+    this.selectedProduct.productId = 0;
 
     this.clientForm = fb.group({
       clientId: ["", [Validators.required, Validators.maxLength(10)]]
     });
 
     this.productForm = fb.group({
-      pName: ["", [Validators.required, Validators.maxLength(150)]]
+      pName: ["", Validators.maxLength(150)]
+    });
+
+    this.saleForm = fb.group({
+      quantity: ["", Validators.required],
+      unitPrice: ["", Validators.required]
     });
   }
 
@@ -40,9 +54,15 @@ export class InvoiceNewComponent implements OnInit {
   searchClient() {
     const id: string = this.clientForm.get("clientId")?.value;
 
+    if(id == "")
+    {
+      return;
+    }
+
     this._clientService.getClient(id).subscribe({
       next: (client: IClient) => {
         this.client = client;
+        console.log(client);
       },
       error: (err: Error) => {
         console.log(err);
@@ -53,18 +73,58 @@ export class InvoiceNewComponent implements OnInit {
     });
   }
 
-  createInvoice()
-  {
+  createInvoice() {
     this.invoice.invoiceId = 1;
   }
 
-  discardInvoice()
-  {
+  discardInvoice() {
     this.invoice.invoiceId = 0;
   }
 
-  searchProducts()
-  {
+  searchProducts() {
+    const name: string = this.productForm.get("pName")?.value;
 
+    if (name == "") {
+      this._productService.getProductList().subscribe({
+        next: (list: IProduct[]) => {
+          this.productList = list
+        },
+        error: (err: Error) => console.log(err)
+      });
+    }
+    else {
+      this._productService.getProductsByName(name).subscribe({
+        next: (list: IProduct[]) => {
+          this.productList = list
+        },
+        error: (err: Error) => console.log(err)
+      });
+    }
+  }
+
+  selectProduct(product: IProduct)
+  {
+    this.saleForm.reset();
+    this.selectedProduct = product;
+
+    this.saleForm.patchValue({
+      quantity: 1,
+      unitPrice: this.selectedProduct.price
+    });
+
+    this.updateSubTotal();
+  }
+
+  updateSubTotal()
+  {
+    const quantity : number = this.saleForm.get("quantity")?.value;
+    const unitPrice : number = this.saleForm.get("unitPrice")?.value;
+
+    this.subTotal = quantity * unitPrice;
+  }
+
+  toCurrency(price: number)
+  {
+    return price.toLocaleString('en-US', { style: 'currency', currency: 'COL' });
   }
 }
