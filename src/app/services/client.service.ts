@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { IClient } from '../interfaces/iclient';
 
 
@@ -9,7 +10,7 @@ import { IClient } from '../interfaces/iclient';
 })
 export class ClientService {
 
-  private myAppUrl = "https://localhost:7044/";
+  private myAppUrl = environment.appUrl;
   private myApiUrl = "api/Clients/";
 
   constructor(private http: HttpClient) { }
