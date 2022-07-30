@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IClient } from 'src/app/interfaces/iclient';
+import { Iinvoice } from 'src/app/interfaces/iinvoice';
+import { IProduct } from 'src/app/interfaces/iproduct';
 import { ClientService } from 'src/app/services/client.service';
 
 @Component({
@@ -10,12 +12,16 @@ import { ClientService } from 'src/app/services/client.service';
 })
 export class InvoiceNewComponent implements OnInit {
 
+  invoice: Iinvoice = {} as Iinvoice;
   client: IClient = {} as IClient;
+  productList: IProduct[] = [];
 
   clientForm: FormGroup;
 
   constructor(private fb: FormBuilder, private _clientService: ClientService) {
-    this.client.clientId = "0";
+    this.invoice.invoiceId = 0;
+    this.client.clientId = "";
+
     this.clientForm = fb.group({
       clientId: ["", [Validators.required, Validators.maxLength(10)]]
     });
@@ -37,5 +43,15 @@ export class InvoiceNewComponent implements OnInit {
         this.client.clientId = "0";
       }
     });
+  }
+
+  createInvoice()
+  {
+    this.invoice.invoiceId = 1;
+  }
+
+  discardInvoice()
+  {
+    this.invoice.invoiceId = 0;
   }
 }
