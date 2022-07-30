@@ -8,11 +8,24 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add product</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                ...
+                <form [formGroup]="productForm" (ngSubmit)="searchProducts()">
+        
+                    <!--Product name-->
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">
+                            <i class="bi bi-person-badge-fill" [class.green-icon]="this.productForm.get('pName')?.valid"
+                                [class.red-icon]="this.productForm.get('pName')?.invalid && this.productForm.get('pName')?.touched"></i>
+                        </span>
+                        <input formControlName="pName" type="text" class="form-control" placeholder="Product name">
+                        <button type="submit" class="btn btn-outline-secondary">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -48,7 +61,7 @@
             <p><strong>Name:</strong> {{client.cName}}</p>
 
             <button *ngIf="invoice.invoiceId == 0" (click)="createInvoice()" class="btn btn-primary">Create new invoice</button>
-            <button *ngIf="invoice.invoiceId != 0" (click)="discardInvoice()" class="btn btn-primary">Discard invoice</button>
+            <button *ngIf="invoice.invoiceId != 0" (click)="discardInvoice()" class="btn btn-danger">Discard invoice</button>
         </div>
     </div>
 </div>
@@ -70,20 +83,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!--
-                    <tr *ngFor="let product of productList">
-                        <td>{{ product.pName }}</td>
-                        <td>{{ client.cName }}</td>
-                        <td>{{ client.phone }}</td>
-                        <td>{{ client.cAddress }}</td>
+                    
+                    <tr *ngFor="let sale of saleList">
+                        <td>{{ sale.product.pName }}</td>
+                        <td>{{ sale.quantity }}</td>
+                        <td>{{ sale.unitPrice }}</td>
+                        <td>{{ sale.subTotal }}</td>
                         <td>
-                            <i (click)="editClient(client)" class="hand bi bi-pencil-square text-info"></i>
-                        </td>
-                        <td>
-                            <i (click)="deleteClient(client.clientId)" class="hand bi bi-trash3-fill text-danger"></i>
+                            <i class="hand bi bi-trash3-fill text-danger"></i>
                         </td>
                     </tr>
-                    -->
+                    
                 </tbody>
             </table>
         </div>

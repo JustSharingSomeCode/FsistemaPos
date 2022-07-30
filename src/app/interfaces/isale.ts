@@ -1,8 +1,11 @@
+import { IProduct } from "./iproduct";
+
 export interface ISale {
     saleId: number;
-    invoiceId_fk: number;
-    productId_fk: number;
+    invoiceIdFk: number;
+    productIdFk: number;
     quantity: number;
-    unit_price: number;
-    sub_total: number;
+    unitPrice: number;
+    subTotal: number;
+    product: IProduct;
 }
