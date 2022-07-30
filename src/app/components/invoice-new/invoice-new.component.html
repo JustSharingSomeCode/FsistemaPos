@@ -25,7 +25,7 @@
 
 <div class="card">
     <div class="card-body">
-        <form [formGroup]="clientForm" action="">
+        <form [formGroup]="clientForm" (ngSubmit)="searchClient()">
 
             <div class="text-center">
                 <h3>Client</h3>
@@ -44,8 +44,8 @@
             </div>
         </form>
 
-        <div>
-
+        <div *ngIf="client.clientId != '0'">
+            <p class="m-0"><strong>Name:</strong> {{client.cName}}</p>
         </div>
     </div>
 </div>

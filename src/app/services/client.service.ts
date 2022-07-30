@@ -19,6 +19,10 @@ export class ClientService {
     return this.http.get<IClient[]>(this.myAppUrl + this.myApiUrl);
   }
 
+  getClient(id: string): Observable<IClient> {
+    return this.http.get<IClient>(this.myAppUrl + this.myApiUrl + id);
+  }
+
   deleteClient(id: string): Observable<any> {
     return this.http.delete(this.myAppUrl + this.myApiUrl + id)
   }
