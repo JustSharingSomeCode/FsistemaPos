@@ -22,31 +22,30 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="card">
-        <div class="card-body">
-            <form [formGroup]="clientForm" action="">
 
-                <div class="text-center">
-                    <h3>Client</h3>
-                </div>
+<div class="card">
+    <div class="card-body">
+        <form [formGroup]="clientForm" action="">
 
-                <!--Client id-->
-                <div class="input-group mb-3">
-                    <span class="input-group-text">
-                        <i class="bi bi-person-badge-fill" [class.green-icon]="this.clientForm.get('clientId')?.valid"
-                            [class.red-icon]="this.clientForm.get('clientId')?.invalid && this.clientForm.get('clientId')?.touched"></i>
-                    </span>
-                    <input formControlName="clientId" type="text" class="form-control" placeholder="Client Id">
-                    <button type="submit" class="btn btn-outline-secondary">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </div>
-            </form>
-
-            <div>
-
+            <div class="text-center">
+                <h3>Client</h3>
             </div>
+
+            <!--Client id-->
+            <div class="input-group mb-3">
+                <span class="input-group-text">
+                    <i class="bi bi-person-badge-fill" [class.green-icon]="this.clientForm.get('clientId')?.valid"
+                        [class.red-icon]="this.clientForm.get('clientId')?.invalid && this.clientForm.get('clientId')?.touched"></i>
+                </span>
+                <input formControlName="clientId" type="text" class="form-control" placeholder="Client Id">
+                <button type="submit" class="btn btn-outline-secondary">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </form>
+
+        <div>
+
         </div>
     </div>
 </div>
