@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IProduct } from 'src/app/interfaces/iproduct';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-products-component',
@@ -34,10 +35,10 @@ export class ProductsComponentComponent implements OnInit {
 
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private _productService: ProductService) {
     this.form = fb.group({
       pName: ["", [Validators.required, Validators.maxLength(150)]],
-      pDescription: ["", Validators.maxLength(250)],
+      pDescription: ["", [Validators.required, Validators.maxLength(250)]],
       stock: ["", Validators.required],
       img: ["", [Validators.required, Validators.maxLength(350)]],
       price: ["", Validators.required]
@@ -45,10 +46,16 @@ export class ProductsComponentComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getProducts();
   }
 
   getProducts() {
-
+    this._productService.getProductList().subscribe({
+      next: (data: IProduct[]) => {
+        this.productList = data;
+      },
+      error: (err: Error) => console.log(err)
+    });
   }
 
   saveProduct() {
@@ -61,12 +68,28 @@ export class ProductsComponentComponent implements OnInit {
       price: this.form.get("price")?.value
     }
 
+    console.log(product);
+
     if (this.editMode) {
       //edit product
+      product.productId = this.editId;
+      this._productService.updateProduct(this.editId, product).subscribe({
+        next: () => {
+          this.cancelEdit();
+          this.getProducts();
+        },
+        error: (err: Error) => console.log(err)
+      });
     }
     else {
       //add product
-      this.productList.push(product);
+      this._productService.saveProduct(product).subscribe({
+        next: () => {
+          this.form.reset();
+          this.getProducts();
+        },
+        error: (err: Error) => console.log(err)
+      });
     }
   }
 
@@ -87,7 +110,13 @@ export class ProductsComponentComponent implements OnInit {
   }
 
   deleteProduct(id: number) {
-
+    this._productService.deleteProduct(id).subscribe({
+      next: () => {
+        this.cancelEdit();
+        this.getProducts();
+      },
+      error: (err: Error) => console.log(err)
+    });
   }
 
   cancelEdit() {
@@ -96,5 +125,10 @@ export class ProductsComponentComponent implements OnInit {
     this.editId = 0;
 
     this.form.reset();
+  }
+
+  toCurrency(price: number)
+  {
+    return price.toLocaleString('en-US', { style: 'currency', currency: 'COL' });
   }
 }
