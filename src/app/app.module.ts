@@ -8,6 +8,8 @@ import { SalesComponentComponent } from './components/sales-component/sales-comp
 import { InvoicesComponentComponent } from './components/invoices-component/invoices-component.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { InvoicesListComponent } from './components/invoices-list/invoices-list.component';
+import { InvoiceNewComponent } from './components/invoice-new/invoice-new.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,9 @@ import { HttpClientModule } from '@angular/common/http';
     ClientsComponentComponent,
     ProductsComponentComponent,
     SalesComponentComponent,
-    InvoicesComponentComponent
+    InvoicesComponentComponent,
+    InvoicesListComponent,
+    InvoiceNewComponent
   ],
   imports: [
     BrowserModule,
