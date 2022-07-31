@@ -5,6 +5,7 @@ import { Iinvoice } from 'src/app/interfaces/iinvoice';
 import { IProduct } from 'src/app/interfaces/iproduct';
 import { ISale } from 'src/app/interfaces/isale';
 import { ClientService } from 'src/app/services/client.service';
+import { InvoiceService } from 'src/app/services/invoice.service';
 import { ProductService } from 'src/app/services/product.service';
 import { SaleService } from 'src/app/services/sale.service';
 
@@ -31,7 +32,8 @@ export class InvoiceNewComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private _clientService: ClientService,
     private _productService: ProductService,
-    private _saleService: SaleService) {
+    private _saleService: SaleService,
+    private _invoiceService: InvoiceService) {
     this.invoice.invoiceId = 0;
     this.client.clientId = "";
     this.selectedProduct.productId = 0;
@@ -76,11 +78,41 @@ export class InvoiceNewComponent implements OnInit {
   }
 
   createInvoice() {
-    this.invoice.invoiceId = 1;
+    //this.invoice.invoiceId = 1;
+    const newInvoice : Iinvoice = {
+      invoiceId: 0,
+      clientIdFk: this.client.clientId,
+      total: 0,
+      invoice_date: new Date()
+    }
+
+    console.log(newInvoice);
+
+    this._invoiceService.saveInvoice(newInvoice).subscribe({
+      next: (res: Iinvoice) => {
+        this.invoice = res;
+      },
+      error: (err: Error) => console.log(err)
+    });
   }
 
   discardInvoice() {
-    this.invoice.invoiceId = 0;
+    this._saleService.deleteByInvoice(this.invoice.invoiceId).subscribe({
+      next: () => 
+      {
+        this._invoiceService.deleteInvoice(this.invoice.invoiceId).subscribe({
+          next: () => 
+          {
+            this.invoice = {} as Iinvoice;
+            this.invoice.invoiceId = 0;
+            this.searchProducts();
+            this.saleList = []
+          },
+          error: (err: Error) => console.log(err)
+        })
+      },
+      error: (err: Error) => console.log(err)
+    });
   }
 
   searchProducts() {
@@ -132,7 +164,7 @@ export class InvoiceNewComponent implements OnInit {
 
   getSales()
   {
-    this._saleService.getSaleList().subscribe({
+    this._saleService.getInvoiceSales(this.invoice.invoiceId).subscribe({
       next: (list: ISale[]) => 
       {
         this.saleList = list;
@@ -147,11 +179,27 @@ export class InvoiceNewComponent implements OnInit {
     sale.invoiceIdFk = this.invoice.invoiceId;
     sale.productIdFk = this.selectedProduct.productId;
     sale.quantity = this.saleForm.get("quantity")?.value;
-    sale.unitPrice = this.saleForm.get("unitPice")?.value;
+    sale.unitPrice = this.saleForm.get("unitPrice")?.value;
     sale.subTotal = this.subTotal;
 
     this._saleService.saveSale(sale).subscribe({
       next: () => {
+        this.getSales();
+        this.searchProducts();
+      },
+      error: (err: Error) => console.log(err)
+    });
+
+    this.selectedProduct = {} as IProduct;
+    this.selectedProduct.productId = 0;
+    this.saleForm.reset();
+  }
+
+  deleteSale(id: number)
+  {
+    this._saleService.deleteSale(id).subscribe({
+      next: () => 
+      {
         this.getSales();
         this.searchProducts();
       },

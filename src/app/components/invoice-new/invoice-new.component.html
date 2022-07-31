@@ -51,7 +51,7 @@
 
                 <div *ngIf="selectedProduct.productId != 0" class="text-center">
                     <h3>{{ selectedProduct.pName }}</h3>
-                    <form [formGroup]="saleForm" (ngSubmit)="saveSale()">
+                    <form [formGroup]="saleForm">
 
                         <!--Product quantity-->
                         <div class="input-group mb-3">
@@ -78,7 +78,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
+                <button type="button" (click)="saveSale()" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -141,7 +141,7 @@
                         <td>{{ sale.unitPrice }}</td>
                         <td>{{ sale.subTotal }}</td>
                         <td>
-                            <i class="hand bi bi-trash3-fill text-danger"></i>
+                            <i (click)="deleteSale(sale.saleId)" class="hand bi bi-trash3-fill text-danger"></i>
                         </td>
                     </tr>
 

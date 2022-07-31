@@ -17,8 +17,17 @@ export class SaleService {
     return this.http.get<ISale[]>(this.myAppUrl + this.myApiUrl);
   }
 
+  getInvoiceSales(id: number): Observable<ISale[]>
+  {
+    return this.http.get<ISale[]>(this.myAppUrl + this.myApiUrl + "by_invoice/" + id);
+  }
+
   deleteSale(id: number): Observable<any> {
     return this.http.delete(this.myAppUrl + this.myApiUrl + id)
+  }
+
+  deleteByInvoice(id: number): Observable<any> {
+    return this.http.delete(this.myAppUrl + this.myApiUrl + "by_invoice/" + id)
   }
 
   saveSale(sale: ISale): Observable<ISale> {
