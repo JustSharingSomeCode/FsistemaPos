@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IClient } from 'src/app/interfaces/iclient';
 import { Iinvoice } from 'src/app/interfaces/iinvoice';
@@ -29,6 +29,9 @@ export class InvoiceNewComponent implements OnInit {
   subTotal: number = 0;
 
   selectedProduct: IProduct = {} as IProduct;
+
+  @Output()
+  updated = new EventEmitter();
 
   constructor(private fb: FormBuilder,
     private _clientService: ClientService,
@@ -70,6 +73,8 @@ export class InvoiceNewComponent implements OnInit {
     this.clientForm.reset();
     this.productForm.reset();
     this.saleForm.reset();
+
+    this.updated.emit();
   }
 
   searchClient() {
@@ -122,6 +127,7 @@ export class InvoiceNewComponent implements OnInit {
             this.invoice.invoiceId = 0;
             this.searchProducts();
             this.saleList = []
+            this.updated.emit();
           },
           error: (err: Error) => console.log(err)
         })
