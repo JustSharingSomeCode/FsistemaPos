@@ -1,1 +1,19 @@
 <p>invoices-list works!</p>
+
+
+<div class="row mt-2 d-flex">
+    <div *ngFor="let invoice of invoiceList" class="col-lg-4 col-md-6 col-sm-6 mb-2 d-flex align-self-stretch">
+        <div class="card shadow col-12">
+            <div class="card-body text-center">
+                <div class="mt-2">
+                    <h5>{{ invoice.invoiceDate.split('T')[0] }}</h5>
+                    <p>{{ invoice.clientIdFk }}</p>
+                    <hr>
+                    <h4>{{ toCurrency(invoice.total) }}$</h4>
+                    <i (click)="editInvoice(invoice)" class="hand bi bi-pencil-square text-info me-4"></i>
+                    <i (click)="deleteInvoice(invoice.invoiceId)" class="hand bi bi-trash3-fill text-danger"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

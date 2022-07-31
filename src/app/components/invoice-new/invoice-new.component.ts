@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IClient } from 'src/app/interfaces/iclient';
@@ -93,12 +94,13 @@ export class InvoiceNewComponent implements OnInit {
   }
 
   createInvoice() {
-    //this.invoice.invoiceId = 1;
+    let date = new DatePipe('en-us').transform(new Date(), 'yyyy-MM-dd')
+
     const newInvoice: Iinvoice = {
       invoiceId: 0,
       clientIdFk: this.client.clientId,
       total: 0,
-      invoice_date: new Date()
+      invoiceDate: date == null ? "0000-00-00" : date
     }
 
     console.log(newInvoice);
