@@ -34,6 +34,7 @@ export class InvoiceNewComponent implements OnInit {
     private _productService: ProductService,
     private _saleService: SaleService,
     private _invoiceService: InvoiceService) {
+
     this.invoice.invoiceId = 0;
     this.client.clientId = "";
     this.selectedProduct.productId = 0;
@@ -55,11 +56,25 @@ export class InvoiceNewComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  reset() {
+    this.invoice = {} as Iinvoice;
+    this.client = {} as IClient;
+    this.productList = [];
+    this.saleList = [];
+
+    this.invoice.invoiceId = 0;
+    this.client.clientId = "";
+    this.selectedProduct.productId = 0;
+
+    this.clientForm.reset();
+    this.productForm.reset();
+    this.saleForm.reset();
+  }
+
   searchClient() {
     const id: string = this.clientForm.get("clientId")?.value;
 
-    if(id == "")
-    {
+    if (id == "") {
       return;
     }
 
@@ -79,7 +94,7 @@ export class InvoiceNewComponent implements OnInit {
 
   createInvoice() {
     //this.invoice.invoiceId = 1;
-    const newInvoice : Iinvoice = {
+    const newInvoice: Iinvoice = {
       invoiceId: 0,
       clientIdFk: this.client.clientId,
       total: 0,
@@ -98,11 +113,9 @@ export class InvoiceNewComponent implements OnInit {
 
   discardInvoice() {
     this._saleService.deleteByInvoice(this.invoice.invoiceId).subscribe({
-      next: () => 
-      {
+      next: () => {
         this._invoiceService.deleteInvoice(this.invoice.invoiceId).subscribe({
-          next: () => 
-          {
+          next: () => {
             this.invoice = {} as Iinvoice;
             this.invoice.invoiceId = 0;
             this.searchProducts();
@@ -136,8 +149,7 @@ export class InvoiceNewComponent implements OnInit {
     }
   }
 
-  selectProduct(product: IProduct)
-  {
+  selectProduct(product: IProduct) {
     this.saleForm.reset();
     this.selectedProduct = product;
 
@@ -149,31 +161,26 @@ export class InvoiceNewComponent implements OnInit {
     this.updateSubTotal();
   }
 
-  updateSubTotal()
-  {
-    const quantity : number = this.saleForm.get("quantity")?.value;
-    const unitPrice : number = this.saleForm.get("unitPrice")?.value;
+  updateSubTotal() {
+    const quantity: number = this.saleForm.get("quantity")?.value;
+    const unitPrice: number = this.saleForm.get("unitPrice")?.value;
 
     this.subTotal = quantity * unitPrice;
   }
 
-  toCurrency(price: number)
-  {
+  toCurrency(price: number) {
     return price.toLocaleString('en-US', { style: 'currency', currency: 'COL' });
   }
 
-  getSales()
-  {
+  getSales() {
     this._saleService.getInvoiceSales(this.invoice.invoiceId).subscribe({
-      next: (list: ISale[]) => 
-      {
+      next: (list: ISale[]) => {
         this.saleList = list;
       }
     });
   }
 
-  saveSale()
-  {
+  saveSale() {
     const sale: ISale = {} as ISale;
     sale.saleId = 0;
     sale.invoiceIdFk = this.invoice.invoiceId;
@@ -195,11 +202,9 @@ export class InvoiceNewComponent implements OnInit {
     this.saleForm.reset();
   }
 
-  deleteSale(id: number)
-  {
+  deleteSale(id: number) {
     this._saleService.deleteSale(id).subscribe({
-      next: () => 
-      {
+      next: () => {
         this.getSales();
         this.searchProducts();
       },
