@@ -14,24 +14,7 @@ export class ProductsComponentComponent implements OnInit {
   editMode = false;
   editId = 0;
 
-  productList: IProduct[] = [
-    {
-      productId: 1,
-      pName: "Lapiz norma",
-      pDescription: "Lapiz negro b2 amarillo",
-      stock: 15,
-      img: "https://d2d21jw8en5l3a.cloudfront.net/vendty2_db_39174_mari2020/imagenes_productos/327_lpiz_de_grafito_hb_n2_negro_norma_imagen.jpeg",
-      price: 2500
-    },
-    {
-      productId: 2,
-      pName: "Resma blanca",
-      pDescription: "",
-      stock: 20,
-      img: "https://http2.mlstatic.com/D_NQ_NP_811560-MCO41309377802_042020-O.jpg",
-      price: 12000
-    }
-  ];
+  productList: IProduct[] = [];
 
   form: FormGroup;
 
