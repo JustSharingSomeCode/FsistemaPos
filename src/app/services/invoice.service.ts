@@ -17,6 +17,10 @@ export class InvoiceService {
     return this.http.get<Iinvoice[]>(this.myAppUrl + this.myApiUrl);
   }
 
+  getInvoice(id: number): Observable<Iinvoice> {
+    return this.http.get<Iinvoice>(this.myAppUrl + this.myApiUrl + id);
+  }
+
   deleteInvoice(id: number): Observable<any> {
     return this.http.delete(this.myAppUrl + this.myApiUrl + id)
   }

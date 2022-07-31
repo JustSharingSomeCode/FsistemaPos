@@ -219,4 +219,21 @@ export class InvoiceNewComponent implements OnInit {
       error: (err: Error) => console.log(err)
     });
   }
+
+  loadInvoice(id: number)
+  {
+    this._invoiceService.getInvoice(id).subscribe({
+      next: (data: Iinvoice) => {
+
+        this.invoice = data;
+
+        this.clientForm.patchValue({
+          clientId: this.invoice.clientIdFk
+        })
+    
+        this.searchClient();
+        this.getSales();
+      }
+    });
+  }
 }

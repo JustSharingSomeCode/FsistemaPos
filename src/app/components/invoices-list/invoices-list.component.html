@@ -7,7 +7,7 @@
                     <p>{{ invoice.clientIdFk }}</p>
                     <hr>
                     <h4>{{ toCurrency(invoice.total) }}$</h4>
-                    <i (click)="editInvoice(invoice)" class="hand bi bi-pencil-square text-info me-4"></i>
+                    <i (click)="editInvoice(invoice.invoiceId)" class="hand bi bi-pencil-square text-info me-4"></i>
                     <i (click)="deleteInvoice(invoice.invoiceId)" class="hand bi bi-trash3-fill text-danger"></i>
                 </div>
             </div>

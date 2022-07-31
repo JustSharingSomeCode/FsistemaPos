@@ -1,4 +1,5 @@
-import { Component, Directive, OnInit, ViewChild } from '@angular/core';
+import { Component, Directive, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { InvoiceNewComponent } from '../invoice-new/invoice-new.component';
 import { InvoicesListComponent } from '../invoices-list/invoices-list.component';
 
 @Component({
@@ -8,7 +9,10 @@ import { InvoicesListComponent } from '../invoices-list/invoices-list.component'
 })
 export class InvoicesComponentComponent implements OnInit {
 
-  @ViewChild(InvoicesListComponent) private child!: InvoicesListComponent;
+  @ViewChild(InvoicesListComponent) private invoiceList!: InvoicesListComponent;
+  @ViewChild(InvoiceNewComponent) private invoiceNew!: InvoiceNewComponent;
+
+  @ViewChild('newTab') tabNewBtn!: ElementRef<HTMLElement>;
 
   constructor() { }
 
@@ -17,7 +21,13 @@ export class InvoicesComponentComponent implements OnInit {
 
   updateInvoiceList()
   {
-    this.child.getInvoices();
+    this.invoiceList.getInvoices();
+  }
+
+  editInvoice(id: number)
+  {
+    this.invoiceNew.loadInvoice(id);
+    this.tabNewBtn.nativeElement.click();
   }
 
 }

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Iinvoice } from 'src/app/interfaces/iinvoice';
 import { InvoiceService } from 'src/app/services/invoice.service';
+import { SaleService } from 'src/app/services/sale.service';
 
 @Component({
   selector: 'app-invoices-list',
@@ -11,7 +12,11 @@ export class InvoicesListComponent implements OnInit {
 
   invoiceList: Iinvoice[] = []
 
-  constructor(private _invoiceService: InvoiceService) {
+  @Output()
+  edit = new EventEmitter<number>();
+
+  constructor(private _invoiceService: InvoiceService,
+    private _saleService: SaleService) {
 
    }
 
@@ -30,14 +35,24 @@ export class InvoicesListComponent implements OnInit {
     });
   }
 
-  editInvoice(invoice: Iinvoice)
+  editInvoice(id: number)
   {
-
+    this.edit.emit(id);
   }
 
   deleteInvoice(id: number)
   {
-
+    this._saleService.deleteByInvoice(id).subscribe({
+      next: () => {
+        this._invoiceService.deleteInvoice(id).subscribe({
+          next: () => {
+            this.getInvoices();
+          },
+          error: (err: Error) => console.log(err)
+        })
+      },
+      error: (err: Error) => console.log(err)
+    });
   }
 
   toCurrency(price: number)
